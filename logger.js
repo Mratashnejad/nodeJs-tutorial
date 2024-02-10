@@ -1,6 +1,6 @@
 var name = 'alireza'
 const log = (data)=>{
-    console.log;
+    console.log(data)
 }
 
-module.exports.log=log;
+module.exports = log;
