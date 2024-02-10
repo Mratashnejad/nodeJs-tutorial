@@ -1,3 +1,6 @@
+const uuid = require('uuid');
+console.log(uuid.v4());
+
 // const path = require('node:path')
 // const data = path.parse(__filename)
 // console.log(data)
@@ -32,22 +35,22 @@
 // emitter.emit('messageLogged' , {id:1 , name:"alireza" , lastname:"atashnejad"});
 
 
-const http= require('http');
+// const http= require('http');
 
-const server = http.createServer((req , res)=>{
-if (req.url === "/"){
-    res.write("hello from home page");
-    res.end()
-}
-if(req.url ==='/api/course'){
-    res.write(JSON.stringify(['html' ,'css']))
-    res.end();
-}
-});
+// const server = http.createServer((req , res)=>{
+// if (req.url === "/"){
+//     res.write("hello from home page");
+//     res.end()
+// }
+// if(req.url ==='/api/course'){
+//     res.write(JSON.stringify(['html' ,'css']))
+//     res.end();
+// }
+// });
 
 // server.on("connection" , (socket)=>{
 //     console.log('new connections is connected');
 // })
 
-server.listen(3000);
-console.log("server is listinign on port 3000");
+// server.listen(3000);
+// console.log("server is listinign on port 3000");
