@@ -5,7 +5,7 @@ require('dotenv').config();
 const startupdebug = require('debug')('startup')
 //import router
 const coursesRoute = require('./routes/courses-route')
-//middlleware
+const homeRoute = require('./routes/home-route')
 const helmet = require('helmet');
 const morgan = require('morgan');
 
@@ -27,6 +27,7 @@ app.use(express.static('public'))
 
 //router
 app.use('/api/courses',coursesRoute)
+app.use('/',homeRoute)
 
 //detecting Mode
 startupdebug('helloo')
@@ -35,11 +36,7 @@ if(app.get('env') === 'development')app.use(morgan('tiny'));
 
 
 //routing
-app.get('/' ,(req , res)=>{
-    res.send("hello ")
-
-})
-
+//moved to the routes folder
 
 const port = process.env.PORT || 3000
 app.listen(port,
@@ -47,7 +44,5 @@ app.listen(port,
         if (err) console.log(err);
         console.log("Server listening on PORT", port);
     });
-
-
 
 //middleware
