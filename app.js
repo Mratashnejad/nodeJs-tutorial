@@ -1,7 +1,34 @@
 const express = require('express');
 require('dotenv').config();
+
+//debuging 
+const startupdebug = require('debug')('startup')
+
+
+const helmet = require('helmet');
+const morgan = require('morgan');
+
+
 const app = express();
 app.use(express.json());
+const Logger = require('./logger');
+const Authentication = require('./auth');
+///
+
+app.use(helmet());
+///
+app.use(Logger);
+app.use(Authentication);
+/// key=value&key2=value2
+app.use(express.urlencoded({extended:true}));
+///public static files
+app.use(express.static('public'))
+//third-party-middleware
+
+
+//detecting Mode
+startupdebug('helloo')
+if(app.get('env') === 'development')app.use(morgan('tiny'));
 
 
 const courses = [
@@ -64,3 +91,15 @@ app.listen(port,
         if (err) console.log(err);
         console.log("Server listening on PORT", port);
     });
+
+app.delete('/api/courses/:id' , (req,res)=>{
+    const course = courses.find(c=>c.id === parseInt(req.params.id))
+    if(!course) return res.status(404).send("course with given id not found")
+    const index = courses.indexOf(course)
+    courses.splice(index,1)
+    res.send(course)
+})
+
+
+
+//middleware

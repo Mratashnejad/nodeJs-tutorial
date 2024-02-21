@@ -1,6 +1,7 @@
-var name = 'alireza'
-const log = (data)=>{
-    console.log(data)
+function Log(req,res,next){
+    console.log("logging...")
+    next()
 }
 
-module.exports = log;
+
+module.exports = Log
