@@ -12,7 +12,7 @@ const courses = [
 
 //routing
 app.get('/' ,(req , res)=>{
-    res.send("hello from alireza")
+    res.send("hello ")
 
 })
 
@@ -46,7 +46,17 @@ app.post('/api/courses' ,(req,res)=>{
 // })
 
 //put
-app.put("/api/courses/:id")
+app.put("/api/courses/:id" , (req, res) =>{
+    const course = courses.find(c=>c.id === parseInt(req.params.id))
+    if(!course) return res.status(404).send("course with given id not found")
+    if(!req.body.name || req.body.name.length <3)
+        return res.status(400).send("name is required and more than 3 charachter")
+    
+    course.name = req.body.name
+    res.send(course)
+})
+
+
 
 const port = process.env.PORT || 3000
 app.listen(port,
