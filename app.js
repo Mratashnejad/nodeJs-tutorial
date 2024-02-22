@@ -11,7 +11,8 @@ const morgan = require('morgan');
 
 const app = express();
 app.use(express.json());
-const Logger = require('./logger');
+
+const Logger = require('./middlewares/logger');
 const Authentication = require('./auth');
 ///
 
