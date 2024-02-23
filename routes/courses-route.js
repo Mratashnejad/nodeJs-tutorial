@@ -12,11 +12,9 @@ router.post('/' ,coursesController.postCourses);
 //put
 router.put("/:id" , coursesController.updateCourses)
 //delete
-router.delete('/:id' , coursesController.deleteCourses)
+router.delete('/:id' , coursesController.deleteCourse)
 
 module.exports = router
-
-
 
 
 // router.get('/api/courses/:courseid/:name?',(req,res)=>{
