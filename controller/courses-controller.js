@@ -1,4 +1,8 @@
 //logig of program
+const CoursesModel = require('../models/courses-model')
+
+
+
 
 const courses = [
     {id:1 , name:'html'},
@@ -7,9 +11,12 @@ const courses = [
 ]
 
 const getCourse = (req,res)=>{
-    const course = courses.find(c => c.id === parseInt(req.params.id))
-    if(!course) res.status(404).send('course with given id not found')
-    res.send(course)
+
+    CoursesModel.getCourses(parseInt(req.params.id)).then((result)=>{
+        //const course = courses.find(c => c.id === parseInt(req.params.id))
+        if(!result) res.status(404).send('course with given id not found');
+        res.send(result);
+    });
 }
 
 const getCourses = (req , res)=>{
