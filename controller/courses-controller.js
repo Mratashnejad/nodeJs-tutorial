@@ -1,10 +1,15 @@
 //logig of program
-const CoursesModel = require('../models/courses-model')
+
+
+
+//IF USING MYSQL =>
+//const CoursesModel = require('../models/courses-model')
+// if using SQL SERVER =>
+const CoursesModelSql = require('../models/courses-model-mssql')
 
 //get one course
 const getCourse = (req,res)=>{
-
-    CoursesModel.getCourse(parseInt(req.params.id)).then((result)=>{
+    CoursesModelSql.getCourse(parseInt(req.params.id)).then((result)=>{
         //const course = courses.find(c => c.id === parseInt(req.params.id))
         if(!result) res.status(404).send('course with given id not found');
         res.send(result);
@@ -12,7 +17,7 @@ const getCourse = (req,res)=>{
 }
 //get list of all coureses
 const getCourses = (req , res)=>{
-    CoursesModel.getCourses(parseInt(req.params.id)).then((result)=>{
+    CoursesModelSql.getCourses(parseInt(req.params.id)).then((result)=>{
         if(!result)res.status(404).send('course with given id is not found');
         res.send(result);
     })
@@ -25,28 +30,28 @@ const insertCourse = (req,res)=>{
         res.status(400).send('name is required');
         return;
     }
-    CoursesModel.insertCourse(req.body.name).then((result)=>{
+    CoursesModelSql.insertCourse(req.body.name).then((result)=>{
         res.send(result)
     })
 }
 
 //update course
 const updateCourses = (req, res) =>{
-    CoursesModel.getCourse(parseInt(req.params.id)).then((result)=>{
+    CoursesModelSql.getCourse(parseInt(req.params.id)).then((result)=>{
         if(!result) return res.status(404).send("course with given id not found");
     })
         if(!req.body.name || req.body.name.length <3)
             return res.status(400).send("name is required and more than 3 charachter");
-    CoursesModel.updateCourse(parseInt(req.params.id),result.name = req.body.name).then((result)=>{
+            CoursesModelSql.updateCourse(parseInt(req.params.id),result.name = req.body.name).then((result)=>{
         res.send(result)
     }) 
 }
 
 const deleteCourse = (req,res)=>{
-    CoursesModel.getCourse(parseInt(req.params.id)).then((result)=>{
+    CoursesModelSql.getCourse(parseInt(req.params.id)).then((result)=>{
         if(!result) return res.status(404).send("course with given id not found");
     })
-    CoursesModel.deleteCourse(parseInt(req.para,s.id)).then((result)=>{
+    CoursesModelSql.deleteCourse(parseInt(req.para,s.id)).then((result)=>{
         res.send(result)
     })
     // if(!course) return res.status(404).send("course with given id not found")

@@ -43,7 +43,7 @@ const port = process.env.PORT || 3000
 app.listen(port,
     function (err) {
         if (err) console.log(err);
-        console.log("Server listening on PORT", port);
+        console.log("Server listening on http://localhost:" + port);
     });
 
 //middleware

@@ -1,5 +1,5 @@
 const pool =require('../utilities/dbconnection')
-
+//MYSQL SETTING
 class CoursesModel {
 
 //insert
