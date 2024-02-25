@@ -1,0 +1,43 @@
+const UsersModel = require('../models/users-model')
+const Joi = require('joi')
+//npm i Joi
+
+
+const register = async (req,res,next) =>{
+    try{
+    const schema = {
+        username: Joi.string().min(3).max(50).required().messages({"string.min" : "name charecter is less than 3 " ,"string.max" : "name charecter is higher that 50"}),
+        email: Joi.string().email().required(),
+        pwd: Joi.string().min(8).max(50).required(),
+    }
+    const validationResult = Joi.object(schema).validate(req.body)
+    if(validationResult.error)
+       return res.status(400).send(validationResult.error.details[0].message)
+      const result  = await UsersModel.insertUser(
+        req.body.username ,
+        req.body.email,
+        req.body.pwd
+        )
+      res.send('User registered successfully.');
+      
+    }catch(err){
+        if(err.message === 'Username is already taken.'){
+            return res.status(409).send('Username is already taken. Please choose a diffrent username.');
+
+        }else{
+            console.error('Error registreing user:' , err);
+            res.status(500).send('Internal Server Error.');
+        }
+    }
+    //console.log(validateResult)
+    // console.log(result)
+    // console.log(req.body)
+    // res.send('OK')
+};
+
+
+const login =async(req,res,next) =>{};
+
+
+
+module.exports = {register , login}; 

@@ -6,6 +6,7 @@ const startupdebug = require('debug')('startup')
 //import router
 const coursesRoute = require('./routes/courses-route')
 const homeRoute = require('./routes/home-route')
+const usersRoute = require('./routes/users-route')
 const helmet = require('helmet');
 const morgan = require('morgan');
 
@@ -27,6 +28,7 @@ app.use(express.static('public'))
 //third-party-middleware
 
 //router
+app.use('/api/users' , usersRoute)
 app.use('/api/courses',coursesRoute)
 app.use('/',homeRoute)
 
