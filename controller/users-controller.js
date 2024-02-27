@@ -48,7 +48,6 @@ const register = async (req,res,next) =>{
     // res.send('OK')
 };
 
-
 const login =async(req,res,next) =>{
     try{
         const schema = {
@@ -66,8 +65,9 @@ const login =async(req,res,next) =>{
         if(!validPwd)
             return res.status(400).send('email or password invalid')
         
+}catch(err){
 
-};
+}}
 
 
 module.exports = {register , login}; 
