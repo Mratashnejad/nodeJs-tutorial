@@ -42,9 +42,26 @@ class UsersModel {
             }
         }
     }
+
+
+
+
     static getUserByEmail = async(email)=>{
-        const [result] = await pool.query('SELECT * FROM users WHERE email =?', [email])
-        return result[0]
+        try{
+        const pool  = await poolPromise;
+        const request = pool.request();
+        request.input("Email",sql.NVarChar,email);
+        const result = await request.query("SELECT * FROM users WHERE email = @Email")
+            if(result.recordset.length >0) {
+                return result.recordset[0];
+            }else{
+                return null;
+            }   
+        return result.recordset
+        } catch(err){
+            console.error('Error fetching user by email:', err);
+            throw err;
+        }
     }
 }
 

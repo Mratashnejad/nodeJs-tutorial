@@ -18,11 +18,8 @@ const register = async (req,res,next) =>{
 
     if(validationResult.error)
        return res.status(400).send(validationResult.error.details[0].message)
-
        //hashpassword 
         const hashPassword = await bcrypt.hash(req.body.pwd,10)
-
-
       const newUser  = await UsersModel.insertUser(
         req.body.username ,
         req.body.email,
@@ -48,8 +45,7 @@ const register = async (req,res,next) =>{
     // res.send('OK')
 };
 
-const login =async(req,res,next) =>{
-    try{
+const login =  async(req,res,next) =>{
         const schema = {
             email: Joi.string().email().required(),
             pwd: Joi.string().min(8).max(50).required(),
@@ -59,15 +55,19 @@ const login =async(req,res,next) =>{
            return res.status(400).send(validationResult.error.details[0].message)
 
     const user = await UsersModel.getUserByEmail(req.body.email);
+    
+    // for test passwords
+    // console.log("user :" ,user)
+    //console.log("Plaintext password:", req.body.pwd);
+    //console.log("Hashed password from database:", user.pwd);
+
+
     if (!user) return res.status(400).send('email or password is invalid');
-
-    const validPwd = await bcrypt.compare(req.body.pwd , user.pwd);
+        const validPwd = await bcrypt.compare(req.body.pwd , user.pwd);
         if(!validPwd)
-            return res.status(400).send('email or password invalid')
-        
-}catch(err){
-
-}}
+            return res.status(400).send('email or password invalid');
+        res.send("login");
+    }
 
 
 module.exports = {register , login}; 
