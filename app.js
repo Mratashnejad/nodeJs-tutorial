@@ -15,6 +15,7 @@ app.use(express.json());
 
 const Logger = require('./middlewares/logger');
 const Authentication = require('./auth');
+const errorHandler = require('./middlewares/error_handler');
 ///
 
 app.use(helmet());
@@ -36,7 +37,8 @@ app.use('/',homeRoute)
 startupdebug('helloo')
 if(app.get('env') === 'development')app.use(morgan('tiny'));
 
-
+//error handler
+app.use(errorHandler)
 
 //routing
 //moved to the routes folder

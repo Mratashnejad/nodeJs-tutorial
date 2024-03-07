@@ -1,53 +1,73 @@
 //logig of program
-
-
+//const {result} = require('underscore')
+//import trycatch handler from utilities
+const {tryCatchHandler} = require('../utilities/tryCatch_handler');
 
 //IF USING MYSQL =>
-//const CoursesModel = require('../models/courses-model')
+//////////const CoursesModel = require('../models/courses-model')
 // if using SQL SERVER =>
 const CoursesModelSql = require('../models/courses-model-mssql')
 
-//get one course
-const getCourse = (req,res)=>{
-    CoursesModelSql.getCourse(parseInt(req.params.id)).then((result)=>{
+// const tryCatchHandler = (controller)=>{
+//     return async (req,res,next)=>{
+//         try {
+//             await controller(req,res)
+//          } catch (error) {
+//              next(error)
+//          }
+//     }
+// }
+
+// Get one course by its ID.
+const getCourse = tryCatchHandler(async(req,res)=>{
+        const result = await CoursesModelSql.getCourse(parseInt(req.params.id))
+
         //const course = courses.find(c => c.id === parseInt(req.params.id))
         if(!result) res.status(404).send('course with given id not found');
         res.send(result);
-    });
-}
-//get list of all coureses
-const getCourses = (req , res)=>{
-    CoursesModelSql.getCourses(parseInt(req.params.id)).then((result)=>{
-        if(!result)res.status(404).send('course with given id is not found');
-        res.send(result);
-    })
+        //res.status(400).send('something failed')
+
+})
+
+// Get a list of all courses.
+const getCourses = tryCatchHandler(async (req , res)=>{
+   
+        const result = await CoursesModelSql.getCourses(parseInt(req.params.id))
+            if(!result)res.status(404).send('course with given id is not found');
+            res.send(result);        
+    
     // res.send(['html' , 'css' , 'java'])
-}
+})
+
 
 //insert course
-const insertCourse = (req,res)=>{
-    if(!req.body.name || req.body.name.length <3){
-        res.status(400).send('name is required');
-        return;
-    }
-    CoursesModelSql.insertCourse(req.body.name).then((result)=>{
-        res.send(result)
+const insertCourse = tryCatchHandler(async (req,res)=>{
+
+        if(!req.body.name || req.body.name.length <3){
+            res.status(400).send('name is required');
+            return;
+        }
+    
+        const result  = await CoursesModelSql.insertCourse(req.body.name)
+            res.send(result)
     })
-}
+        
 
 //update course
-const updateCourses = (req, res) =>{
-    CoursesModelSql.getCourse(parseInt(req.params.id)).then((result)=>{
-        if(!result) return res.status(404).send("course with given id not found");
-    })
-        if(!req.body.name || req.body.name.length <3)
-            return res.status(400).send("name is required and more than 3 charachter");
-            CoursesModelSql.updateCourse(parseInt(req.params.id),result.name = req.body.name).then((result)=>{
-        res.send(result)
-    }) 
-}
+const updateCourses = tryCatchHandler(async (req, res) =>{
+    
+        const existingCourse = await CoursesModelSql.getCourse(parseInt(req.params.id))
+        if(!existingCourse) return res.status(404).send("Course with the given ID not found");
 
-const deleteCourse = (req,res)=>{
+        if(!req.body.name || req.body.name.length <3)
+            return res.status(400).send("Name is required and must be at least 3 characters long");
+            const updatedCourse = await CoursesModelSql.updateCourse(parseInt(req.params.id),result.name = req.body.name)
+        res.send(updatedCourse)
+})
+
+
+// Delete an existing course.
+const deleteCourse = tryCatchHandler(async (req,res )=>{
     CoursesModelSql.getCourse(parseInt(req.params.id)).then((result)=>{
         if(!result) return res.status(404).send("course with given id not found");
     })
@@ -58,9 +78,10 @@ const deleteCourse = (req,res)=>{
     // const index = courses.indexOf(course)
     // courses.splice(index,1)
     // res.send(course)
-}
+})
 
-const postCourses = (req,res)=>{
+
+const postCourses = tryCatchHandler(async(req,res)=>{
     if(!req.body.name || req.body.name.length <3)
     {
         res.status(400).send("name is required")
@@ -72,8 +93,9 @@ const postCourses = (req,res)=>{
     }
     courses.push(course)
     res.send(course)
-}
+})
 
+// Export all route handlers.
 module.exports={
     insertCourse,
     getCourse,

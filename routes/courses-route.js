@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const coursesController= require('../controller/courses-controller')
+const auth = require('../middlewares/auth')
+
+// if we wanna use for all the routes down using 
+//router.use(auth)
 
 
-router.get('/' ,coursesController.getCourses);
+
+// if wann use for only one route or specefice route with use it inside the route
+//router.get('/' ,auth,coursesController.getCourses);
+router.get('/',coursesController.getCourses);
 //get
-router.get('/:id',coursesController.getCourse);
+router.get('/:id', coursesController.getCourse);
 //post
 router.post('/' ,coursesController.postCourses);
 
